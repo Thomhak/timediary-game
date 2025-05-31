@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="progress-container">
-        <div id="progressBar" class="progress-bar" style="width: 50%"></div>
+        <div id="progressBar" class="progress-bar" style="width: 100%"></div>
     </div>
     
    <div class="content">
@@ -26,21 +26,74 @@
             <div class="step-number">1</div>
             <div class="step-content">
                 <h2>How the Diary Works</h2>
-                <p>The diary shows a full day from 4am to 4am the next day, divided into 10-minute intervals.</p>
+                <p>The diary shows a full day from 4am to 4am the next day, divided into 10-minute intervals. Initially the diary will be empty, but as you gradually fill it out it will look like:</p>
 
                 <div class="layout-specific horizontal-layout">
-                    <p>On your computer screen, the timeline appears horizontally - scroll left and right to move through the day.</p>
                     <img src="../assets/timeline_horizontal_short.png" alt="Timeline overview (horizontal layout)" loading="lazy" />
+                    <p>On your device screen, the timeline will appear horizontally - scroll left and right to move through the day.</p>
                 </div>
                 <div class="layout-specific vertical-layout">
-                    <p>On your phone screen, the timeline appears vertically - scroll up and down to move through the day.</p>
                     <img src="../assets/timeline_vertical.png" alt="Timeline overview (vertical layout)" loading="lazy" />
+                    <p>On your device screen, the timeline will appear vertically - scroll up and down to move through the day.</p>
                 </div>
             </div>
         </div>
 
         <div class="instruction-step">
             <div class="step-number">2</div>
+            <div class="step-content">
+                <h2>Select and Place an Activity</h2>
+                <div class="layout-specific horizontal-layout">
+                    <div class="gif-container loading" data-src="../assets/select_horizontal.gif">
+                        <img src="../assets/select_horizontal.gif" alt="Selecting an activity from the bottom menu" loading="lazy" onload="this.parentElement.classList.remove('loading')" />
+                    </div>
+                    <p>Choose an activity from the menu at the bottom of the screen, then place it on the timeline.</p>
+                </div>
+                <div class="layout-specific vertical-layout">
+                    <div class="gif-container loading" data-src="../assets/select_vertical_new.gif">
+                        <img src="../assets/select_vertical_new.gif" alt="Selecting an activity in vertical layout" loading="lazy" onload="this.parentElement.classList.remove('loading')" />
+                    </div>
+                    <p>Tap the (+) button in the bottom right corner to open the activity menu, then select an activity and tap where you want to place it on the timeline.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="instruction-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h2>Adjust Activity Duration</h2>
+                <div class="layout-specific horizontal-layout">
+                    <div class="gif-container loading" data-src="../assets/adjust_horizontal.gif">
+                        <img src="../assets/adjust_horizontal.gif" alt="Placing and adjusting activity duration horizontally" loading="lazy" onload="this.parentElement.classList.remove('loading')" />
+                    </div>
+                    <p>Click and drag the edges horizontally to set the duration.</p>
+                </div>
+                <div class="layout-specific vertical-layout">
+                    <div class="gif-container loading" data-src="../assets/adjust_vertical_new.gif">
+                        <img src="../assets/adjust_vertical_new.gif" alt="Placing and adjusting activity duration vertically" loading="lazy" onload="this.parentElement.classList.remove('loading')" />
+                    </div>
+                    <p>Drag the edges vertically to set the duration.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="instruction-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h2>Submit Your Diary</h2>
+                <p>Once you've recorded all your activities for the day, click the Submit button to complete your diary.</p>
+                <div class="feature-item">
+                    <button class="btn save-btn" aria-label="Submit diary">
+                        <i class="fas fa-check" aria-hidden="true"></i>
+                        Submit
+                    </button>
+                    <p>Click to submit your completed diary</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="instruction-step">
+            <div class="step-number">5</div>
             <div class="step-content">
                 <h2>Tips for Accurate Recording</h2>
                 <div class="tip-card">
@@ -52,12 +105,42 @@
                 </div>
             </div>
         </div>
+
+        <div class="helpful-tools">
+            <h2>Helpful tools</h2>
+            <div class="controls features-grid">
+                <div class="feature-item">
+                    <button class="btn undo-btn" data-is-active="false" disabled aria-label="Undo last action">
+                        <i class="fas fa-undo" aria-hidden="true"></i>
+                        Undo
+                    </button>
+                    <p>Did you make a mistake? Reverse your last action</p>
+                </div>
+
+                <div class="feature-item">
+                    <button class="btn clean-row-btn" data-is-active="false" disabled aria-label="Clean current row">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                        Clean Row
+                    </button>
+                    <p>Want to start over? Clean the row</p>
+                </div>
+
+                <div class="feature-item">
+                    <button class="activity-button" style="--color: #C6C6FF;" aria-label="Add custom activity">
+                        <span class="activity-text">
+                            <span class="activity-name">Other not listed (enter)</span>
+                        </span>
+                    </button>
+                    <p>Activity not listed? Add a custom activity</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <nav class="navigation">
         <div></div>
-        <button id="continueBtn" aria-label="Continue to next page">
-            Continue
+        <button id="continueBtn" aria-label="Start using the diary">
+            Start
             <i class="fas fa-chevron-right" aria-hidden="true"></i>
         </button>
     </nav>

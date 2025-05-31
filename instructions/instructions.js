@@ -13,7 +13,6 @@ function updateLayout() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const backBtn = document.getElementById('backBtn');
     const continueBtn = document.getElementById('continueBtn');
     const progressBar = document.getElementById('progressBar');
     
@@ -39,18 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return redirectUrl.toString();
     }
     
-    // Update progress bar animation with requestAnimationFrame for better performance
+    // Update progress bar - set to 100% since it's all on one page
     if (progressBar) {
-        let animationFrame;
-        const updateProgress = () => {
-            progressBar.style.transition = 'width 0.6s ease';
-            if (window.location.pathname.includes('1.html')) {
-                progressBar.style.width = '50%';
-            } else if (window.location.pathname.includes('2.html')) {
-                progressBar.style.width = '100%';
-            }
-        };
-        animationFrame = requestAnimationFrame(updateProgress);
+        progressBar.style.transition = 'width 0.6s ease';
+        progressBar.style.width = '100%';
     }
 
     // Detect layout orientation with debouncing
@@ -91,25 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle navigation with transition animations
-    if (window.location.pathname.includes('2.html') && backBtn) {
-        backBtn.addEventListener('click', () => {
-            progressBar.style.width = '0%';
-            setTimeout(() => {
-                window.location.href = createUrlWithParams('1.html');
-            }, 300);
-        });
-    }
-    
-    if (window.location.pathname.includes('1.html')) {
-        continueBtn.addEventListener('click', () => {
-            progressBar.style.width = '100%';
-            setTimeout(() => {
-                window.location.href = createUrlWithParams('2.html');
-            }, 300);
-        });
-    } else if (window.location.pathname.includes('2.html') && continueBtn) {
-        continueBtn.textContent = 'Start';
+    // Handle navigation - now only goes to main app
+    if (continueBtn) {
         continueBtn.addEventListener('click', () => {
             window.location.href = createUrlWithParams('../index.html');
         });
@@ -118,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cleanup function
     function cleanup() {
         if (orientationTimeout) clearTimeout(orientationTimeout);
-        if (animationFrame) cancelAnimationFrame(animationFrame);
         lazyImageObservers.forEach(observer => observer.disconnect());
         lazyImageObservers.clear();
         window.removeEventListener('resize', updateLayoutClass);
