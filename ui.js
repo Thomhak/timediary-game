@@ -171,6 +171,7 @@ function updateButtonStates() {
     const undoButton = document.getElementById('undoBtn');
     const cleanRowButton = document.getElementById('cleanRowBtn');
     const nextButton = document.getElementById('nextBtn');
+    const footerSubmitButton = document.getElementById('footerSubmitBtn');
     
     const currentData = getCurrentTimelineData();
     const isEmpty = currentData.length === 0;
@@ -194,6 +195,7 @@ function updateButtonStates() {
     // Check if we're on the last timeline
     const isLastTimeline = window.timelineManager.currentIndex === window.timelineManager.keys.length - 1;
     
+    // Update main Next button
     if (nextButton) {
         if (isLastTimeline) {
             // On last timeline, enable Next only if coverage requirement is met
@@ -203,6 +205,19 @@ function updateButtonStates() {
             // For other timelines, enable Next if coverage requirement is met
             nextButton.disabled = !meetsMinCoverage;
             nextButton.innerHTML = meetsMinCoverage ? 'Next <i class="fas fa-arrow-right"></i>' : '<i class="fas fa-check"></i> Submit';
+        }
+    }
+    
+    // Update footer submit button with same logic
+    if (footerSubmitButton) {
+        if (isLastTimeline) {
+            // On last timeline, enable footer submit only if coverage requirement is met
+            footerSubmitButton.disabled = !meetsMinCoverage;
+            footerSubmitButton.innerHTML = '<i class="fas fa-check"></i> Submit';
+        } else {
+            // For other timelines, enable footer submit if coverage requirement is met
+            footerSubmitButton.disabled = !meetsMinCoverage;
+            footerSubmitButton.innerHTML = meetsMinCoverage ? 'Next <i class="fas fa-arrow-right"></i>' : '<i class="fas fa-check"></i> Submit';
         }
     }
 }
@@ -320,6 +335,29 @@ function initButtons() {
             addNextTimeline();
         }
     });
+
+    // Add click handler for Footer Submit button with shared debounce
+    const footerSubmitBtn = document.getElementById('footerSubmitBtn');
+    if (footerSubmitBtn) {
+        footerSubmitBtn.addEventListener('click', () => {
+            const currentTime = Date.now();
+            if (currentTime - nextButtonLastClick < NEXT_BUTTON_COOLDOWN) {
+                console.log('Footer submit button on cooldown');
+                return;
+            }
+            nextButtonLastClick = currentTime;
+
+            const isLastTimeline = window.timelineManager.currentIndex === window.timelineManager.keys.length - 1;
+            
+            if (isLastTimeline) {
+                // On last timeline, show confirmation modal
+                document.getElementById('confirmationModal').style.display = 'block';
+            } else {
+                // For other timelines, proceed to next timeline
+                addNextTimeline();
+            }
+        });
+    }
 
     // Disable back button initially
     const backButton = document.getElementById('backBtn');

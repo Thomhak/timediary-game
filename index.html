@@ -101,10 +101,14 @@
     <!-- Attribute Tracker Script -->
     <script src="attributeTracker.js"></script>
 
-    <div id="instructionsFooter" style="padding: 20px; background: white; border-top: 1px solid #ddd; text-align: left; margin-top: 20px;">
+    <div id="instructionsFooter" style="padding: 20px; background: white; border-top: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
         <button onclick="window.location.href='./instructions/2.html'" class="navigation-btn">
             <i class="fas fa-chevron-left"></i>
             Back to Instructions
+        </button>
+        <button class="btn next-btn" id="footerSubmitBtn" data-is-active="false" disabled>
+            <i class="fas fa-arrow-right"></i>
+            Next
         </button>
     </div>
 </body>
