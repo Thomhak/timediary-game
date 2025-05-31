@@ -511,7 +511,9 @@ export async function sendDataToSupabase() {
       category: row.category,
       startTime: row.startTime,
       endTime: row.endTime,
-      pid: pid
+      pid: pid,
+      ...(row.diaryWave !== undefined && { diaryWave: row.diaryWave }),
+      ...(row.pilot !== undefined && { pilot: row.pilot })
     }));
 
     // Insert timeline data
