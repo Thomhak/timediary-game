@@ -192,6 +192,12 @@ function updateButtonStates() {
     const minCoverage = parseInt(currentTimeline.minCoverage) || 0;
     const meetsMinCoverage = currentCoverage >= minCoverage;
 
+    // Check if validation is disabled via URL parameter
+    const validationDisabled = window.isValidationDisabled && window.isValidationDisabled();
+    
+    // Allow submission if validation is disabled OR if coverage requirement is met
+    const canSubmit = validationDisabled || meetsMinCoverage;
+
     // Check if we're on the last timeline
     const isLastTimeline = window.timelineManager.currentIndex === window.timelineManager.keys.length - 1;
     
@@ -199,12 +205,12 @@ function updateButtonStates() {
     if (nextButton) {
         if (isLastTimeline) {
             // On last timeline, enable Next only if coverage requirement is met
-            nextButton.disabled = !meetsMinCoverage;
+            nextButton.disabled = !canSubmit;
             nextButton.innerHTML = '<i class="fas fa-check"></i> Submit';
         } else {
             // For other timelines, enable Next if coverage requirement is met
-            nextButton.disabled = !meetsMinCoverage;
-            nextButton.innerHTML = meetsMinCoverage ? 'Next <i class="fas fa-arrow-right"></i>' : '<i class="fas fa-check"></i> Submit';
+            nextButton.disabled = !canSubmit;
+            nextButton.innerHTML = canSubmit ? 'Next <i class="fas fa-arrow-right"></i>' : '<i class="fas fa-check"></i> Submit';
         }
     }
     
@@ -212,12 +218,12 @@ function updateButtonStates() {
     if (footerSubmitButton) {
         if (isLastTimeline) {
             // On last timeline, enable footer submit only if coverage requirement is met
-            footerSubmitButton.disabled = !meetsMinCoverage;
+            footerSubmitButton.disabled = !canSubmit;
             footerSubmitButton.innerHTML = '<i class="fas fa-check"></i> Submit';
         } else {
             // For other timelines, enable footer submit if coverage requirement is met
-            footerSubmitButton.disabled = !meetsMinCoverage;
-            footerSubmitButton.innerHTML = meetsMinCoverage ? 'Next <i class="fas fa-arrow-right"></i>' : '<i class="fas fa-check"></i> Submit';
+            footerSubmitButton.disabled = !canSubmit;
+            footerSubmitButton.innerHTML = canSubmit ? 'Next <i class="fas fa-arrow-right"></i>' : '<i class="fas fa-check"></i> Submit';
         }
     }
 }

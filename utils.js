@@ -908,6 +908,15 @@ function downloadCSV(csvString, filename) {
 }
 
 /**
+ * Check if validation is disabled via URL parameter
+ * @returns {boolean} true if validation=off is present in URL parameters
+ */
+export function isValidationDisabled() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('validation') === 'off';
+}
+
+/**
  * sendData function to either send data via Supabase or download as CSV locally.
  * 
  * @param {Object} options - Options to control the sending behavior.

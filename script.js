@@ -35,6 +35,24 @@ import {
     TIMELINE_HOURS
 } from './constants.js';
 
+import { 
+    formatTimeDDMMYYYYHHMM,
+    formatTimeHHMM,
+    timeToMinutes,
+    findNearestMarkers,
+    minutesToPercentage,
+    positionToMinutes,
+    calculateMinimumBlockWidth,
+    hasOverlap,
+    canPlaceActivity,
+    isTimelineFull,
+    isOverlapping,
+    generateUniqueId,
+    createTimeLabel,
+    updateTimeLabel,
+    isValidationDisabled
+} from './utils.js';
+
 let selectedActivity = null;
 
 // Single timeline management object
@@ -60,22 +78,8 @@ if(urlParams.toString()) {
 // Function to calculate timeline coverage in minutes
 window.getTimelineCoverage = getTimelineCoverage;
 
-import { 
-    formatTimeDDMMYYYYHHMM,
-    formatTimeHHMM,
-    timeToMinutes,
-    findNearestMarkers,
-    minutesToPercentage,
-    positionToMinutes,
-    calculateMinimumBlockWidth,
-    hasOverlap,
-    canPlaceActivity,
-    isTimelineFull,
-    isOverlapping,
-    generateUniqueId,
-    createTimeLabel,
-    updateTimeLabel
-} from './utils.js';
+// Function to check if validation is disabled
+window.isValidationDisabled = isValidationDisabled;
 
 // NEW: Helper functions to format timeline times based on our 04:00 (240 minutes) rule
 function formatTimelineStart(minutes) {
@@ -131,7 +135,7 @@ async function addNextTimeline() {
         
         // Update content immediately
         timelineTitle.textContent = nextTimeline.name;
-        timelineDescription.textContent = nextTimeline.description;
+        timelineDescription.innerHTML = nextTimeline.description;
         
         // Trigger reflow to ensure animation plays
         void timelineHeader.offsetWidth;
