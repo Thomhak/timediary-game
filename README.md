@@ -5,7 +5,7 @@ A light version of [O-TUD](https://github.com/andreifoldes/o-timeusediary), a we
 [![DOI](https://zenodo.org/badge/928261797.svg)](https://doi.org/10.5281/zenodo.17592563)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Citation
+### Citation
 Hakman, T., & Foldes, T. A. (2025). LO-TUD - Light Online Time Use Diary (V1.0.0). Zenodo. https://doi.org/10.5281/zenodo.17592564
 
 ## 🚀 Quick Start
