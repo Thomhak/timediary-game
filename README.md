@@ -5,7 +5,7 @@ A light version of [O-TUD](https://github.com/andreifoldes/o-timeusediary), a we
 ## 🚀 Quick Start
 
 - **[LO-TUD Live Demo](https://timediary-game.netlify.app)** - Try the light version
-- **[O-TUDLive Demo](https://andreifoldes.github.io/o-timeusediary/index.html)** - Try the full version
+- **[O-TUD Live Demo](https://andreifoldes.github.io/o-timeusediary/index.html)** - Try the full version
 - **[Documentation](https://andreifoldes.github.io/o-timeusediary/docs/index.html)** - Complete setup and configuration guides
 
 ## Features
