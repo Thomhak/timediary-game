@@ -3,6 +3,7 @@
 A light version of [O-TUD](https://github.com/andreifoldes/o-timeusediary), a web-based research tool for collecting and visualizing daily activities in a timeline format. It is a simplified and minimalist version with fewer features specifically designed for daily time-use surveys in the [Open Play](https://digital-wellbeing.github.io/open-play/) study. This version takes ~3 minutes to complete, instead of the original version which takes ~15 minutes. 
 
 [![DOI](https://zenodo.org/badge/928261797.svg)](https://doi.org/10.5281/zenodo.17592563)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🚀 Quick Start
 
