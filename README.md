@@ -1,4 +1,4 @@
-# LO-TUD -  Light Online Time Diary
+# LO-TUD -  Light Online Time Use Diary
 
 A light version of [O-TUD](https://github.com/andreifoldes/o-timeusediary), a web-based research tool for collecting and visualizing daily activities in a timeline format. It is a simplified and minimalist version with fewer features specifically designed for daily time-use surveys in the [Open Play](https://digital-wellbeing.github.io/open-play/) study. This version takes ~3 minutes to complete, instead of the original version which takes ~15 minutes. 
 
