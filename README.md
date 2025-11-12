@@ -1,15 +1,33 @@
-# O-ELIDDI - Daily Activity Collection Tool
+# LO-TUD -  Light Online Time Diary
 
-A web-based tool for collecting and visualizing daily activities in a timeline format. Designed for research studies and time-use surveys.
+A light version of [O-TUD](https://github.com/andreifoldes/o-timeusediary), a web-based research tool for collecting and visualizing daily activities in a timeline format. It is a simplified and minimalist version with fewer features specifically designed for daily time-use surveys in the [Open Play](https://digital-wellbeing.github.io/open-play/) study. This version takes ~3 minutes to complete, instead of the original version which takes ~15 minutes. 
 
+## 🚀 Quick Start
+
+- **[LO-TUD Live Demo](https://timediary-game.netlify.app)** - Try the light version
+- **[O-TUDLive Demo](https://andreifoldes.github.io/o-timeusediary/index.html)** - Try the full version
+- **[Documentation](https://andreifoldes.github.io/o-timeusediary/docs/index.html)** - Complete setup and configuration guides
 
 ## Features
 
 *   **Interactive Timeline Interface:**  Engage with your data through a dynamic timeline. Users can easily navigate and explore their activities with zoom and pan functionalities.
 *   **Drag and Drop Activity Placement:**  Intuitively add and reposition activities directly on the timeline. This feature simplifies data entry and adjustments, making it user-friendly for participants.
 *   **Mobile and Desktop Responsive Layouts:**  Access and use the tool seamlessly across various devices. Whether on a desktop for detailed analysis or a mobile device for on-the-go recording, the layout adapts to provide an optimal experience.
-*   **Offline Capability:**  Record activities even without an internet connection. The tool stores data locally and synchronizes it once online, ensuring no data loss and continuous usability.
+    - **Desktop Layout:** Features a full-width timeline with horizontal controls, optimized for precise mouse interactions and detailed data entry
+    - **Mobile Layout:** Compact vertical layout with touch-friendly controls, optimized for finger navigation and thumb interaction
 *   **Data Export Functionality:**  Export your collected data in common formats like CSV and JSON. This allows for easy integration with other analysis tools and research workflows.
+
+## Screenshots
+
+### Desktop Layout
+The desktop version provides a comprehensive view with full-width timeline and horizontal navigation controls, designed for detailed data entry and analysis.
+
+![Desktop Layout](docs/images/desktop-layout.png)
+
+### Mobile Layout
+The mobile version features a compact, touch-friendly interface with vertical controls optimized for smartphone usage and on-the-go data collection.
+
+![Mobile Layout](docs/images/mobile-layout.png)
 
 ## Technology Stack
 
@@ -17,15 +35,12 @@ A web-based tool for collecting and visualizing daily activities in a timeline f
 *   CSS
 *   JavaScript
 
-## Demo
-*   [Live Demo main](https://taupe-sprite-bfbfdb.netlify.app/)
-*   [Live Demo Thomas-dev](https://timediary-thomas-dev.netlify.app/)
 
 ## Usage
 
 ### For Researchers
 
-Researchers can utilize O-ELIDDI to:
+Researchers can utilize LO-TUD to:
 
 *   **Design and deploy time-use studies:** Customize activity categories and study durations to fit specific research needs.
 *   **Collect rich activity data:** Gather detailed information about participant's daily routines in a structured timeline format.
@@ -33,7 +48,7 @@ Researchers can utilize O-ELIDDI to:
 
 ### For Participants
 
-Participants can use O-ELIDDI to:
+Participants can use LO-TUD to:
 
 *   **Record daily activities:**  Log your daily activities in an intuitive timeline interface by simply dragging and dropping activities.
 *   **Visualize time use:**  Gain insights into how your time is spent each day, week, or study period through interactive visualizations.
@@ -41,7 +56,7 @@ Participants can use O-ELIDDI to:
 
 ## Contributing
 
-We welcome contributions to O-ELIDDI!
+We welcome contributions to O-TUD! Since LO-TUD is a simplified version of O-TUD, any contributions to O-TUD will also benefit LO-TUD.
 
 *   **Pull Requests:**  Feel free to submit pull requests for bug fixes, feature enhancements, or documentation improvements.
 *   **Issue Reporting:**  For major changes or to report issues, please open an issue first to discuss the proposed changes.
