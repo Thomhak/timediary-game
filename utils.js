@@ -497,10 +497,19 @@ export async function sendDataToSupabase() {
     let studyData = window.timelineManager?.study || {};
     let pid;
     
-    if (!('pid' in studyData) && !('PID' in studyData)) {
+    // Check if ppid exists and is not empty
+    const hasPpid = (studyData.ppid !== undefined && studyData.ppid !== null && studyData.ppid !== '') || 
+                   (studyData.PPID !== undefined && studyData.PPID !== null && studyData.PPID !== '');
+    
+    if (hasPpid) {
+      // Use ppid as pid when ppid is not empty
+      pid = studyData.ppid || studyData.PPID;
+    } else if (!('pid' in studyData) && !('PID' in studyData)) {
+      // Generate random pid if neither pid nor ppid exists
       pid = ('0000000000000000' + Math.floor(Math.random() * 1e16)).slice(-16);
       studyData.pid = pid;
     } else {
+      // Use existing pid if ppid doesn't exist but pid does
       pid = studyData.pid || studyData.PID;
     }
 
@@ -511,7 +520,8 @@ export async function sendDataToSupabase() {
       category: row.category,
       startTime: row.startTime,
       endTime: row.endTime,
-      pid: pid
+      pid: pid,
+      diaryWave: studyData.DIARY_WAVE ? parseInt(studyData.DIARY_WAVE) : null
     }));
 
     // Insert timeline data
@@ -538,6 +548,11 @@ export async function sendDataToSupabase() {
       };
     }
 
+    // Determine session_id based on whether ppid exists
+    const session_id = hasPpid && (studyData.survey || studyData.SURVEY) 
+      ? (studyData.survey || studyData.SURVEY) 
+      : (studyData.SESSION_ID || null);
+
     const participantData = {
       pid,
       viewportWidth,
@@ -548,7 +563,7 @@ export async function sendDataToSupabase() {
       instructions: studyData.instructions === 'completed',
       PROLIFIC_PID: studyData.PROLIFIC_PID || null,
       STUDY_ID: studyData.STUDY_ID || null,
-      SESSION_ID: studyData.SESSION_ID || null
+      SESSION_ID: session_id
     };
 
     // Insert participant data
@@ -562,27 +577,54 @@ export async function sendDataToSupabase() {
 
     console.log('Data inserted successfully');
 
-    // Handle redirect if configured
-    const redirectUrl = window.timelineManager?.general?.redirect_url;
-    if (redirectUrl) {
-      const currentParams = window.location.search;
-      const separator = redirectUrl.includes('?') ? '&' : '?';
-      const newRedirectUrl = redirectUrl + (currentParams ? separator + currentParams.substring(1) : '');
-      window.location.href = newRedirectUrl;
+    // Handle redirect with dynamic completion code based on DIARY_WAVE
+    // Use the hasPpid variable that was already defined above
+    const redirectBaseUrl = hasPpid 
+      ? window.timelineManager?.general?.secondary_redirect_url 
+      : window.timelineManager?.general?.primary_redirect_url;
+      
+    if (redirectBaseUrl) {
+      // Array of completion codes
+      const completionCodes = [
+        'CKQ9SACZ', '7OUP8GG8', 'BYRCC57H', 'KVISTMSQ', 'G3D1QRKY',
+        '5VLOWSC8', 'DVBOMH46', 'F90T9VY7', '5CI0KZXR', 'PJKNGCJQ',
+        'MMU9YF9E', 'OZD23I9Z', 'JTLF2JBY', 'R3EJZ783', '1OQUHGX8',
+        'IRBNWQB0', 'ZBJIRJ0X', '8IGG5BM0', 'BGIK438O', '8AXJ3AC8',
+        '77P8WHRU', 'JAWNXG4O', 'XO46HSKW', 'JJI3D8AX', 'ZYQWCXAE',
+        'QBX3DEHB', '4H8LK4OG', 'H29BLXCO', 'DL8UUX2E', 'DY84N1VY'
+      ];
+
+      // Get DIARY_WAVE from study data, default to 1 if missing
+      const diaryWave = studyData.DIARY_WAVE ? parseInt(studyData.DIARY_WAVE) : 1;
+      
+      // Calculate index safely (ensure it's within array bounds)
+      const index = Math.max(0, Math.min(diaryWave-1, completionCodes.length - 1));
+      
+      // Get the appropriate completion code
+      const completionCode = completionCodes[index];
+
+      // Extract base URL without the cc parameter
+      let baseRedirectUrl = redirectBaseUrl;
+      if (baseRedirectUrl.includes('?cc=')) {
+        baseRedirectUrl = baseRedirectUrl.split('?cc=')[0];
+      }
+
+      // Construct the new redirect URL with the dynamic completion code
+      const newRedirectUrl = `${baseRedirectUrl}?cc=${completionCode}`;
+
+      // Add any existing URL parameters
+      const currentParams = new URLSearchParams(window.location.search);
+      const separator = newRedirectUrl.includes('?') ? '&' : '?';
+      const finalRedirectUrl = newRedirectUrl + 
+        (currentParams.toString() ? separator + currentParams.toString() : '');
+
+      window.location.href = finalRedirectUrl;
     }
 
     return { success: true };
-
   } catch (error) {
-    console.error('Error in sendDataToSupabase:', error);
-    
-    // If we're in CSV fallback mode, try that instead
-    if (window.timelineManager?.general?.fallbackToCSV) {
-      console.log('Falling back to CSV download...');
-      return sendData({ mode: 'csv' });
-    }
-    
-    throw error;
+    console.error('Error sending data:', error);
+    return { success: false, error: error.message };
   }
 }
 
@@ -867,6 +909,9 @@ function downloadCSV(csvString, filename) {
  *   or { mode: 'csv' } to trigger a CSV file download.
  */
 export async function sendData(options = { mode: 'supabase' }) {
+    // Sync URL parameters before sending data
+    syncURLParamsToStudy();
+    
     if (options.mode === 'supabase') {
         // Call the existing function that sends data to Supabase
         return await sendDataToSupabase();
@@ -885,63 +930,32 @@ export function checkAndRequestPID() {
   const pid = urlParams.get('pid');
   
   if (!pid) {
-    const modalOverlay = document.createElement('div');
-    modalOverlay.className = 'modal-overlay';
-    modalOverlay.style.display = 'flex';
+    // Temporarily disabled modal - instead generate a random PID
+    const randomPid = ('0000000000000000' + Math.floor(Math.random() * 1e16)).slice(-16);
     
-    modalOverlay.innerHTML = `
-      <div class="modal pid-modal">
-        <div class="modal-content">
-          <h3>Participant ID Required</h3>
-          <p>Please enter your Prolific ID to continue:</p>
-          <input 
-            type="text" 
-            id="pidInput" 
-            placeholder="Enter Prolific ID" 
-            maxlength="24"
-          >
-          <div class="button-container">
-            <button id="confirmPID" class="btn save-btn">
-              <i class="fas fa-check"></i>
-              Continue
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(modalOverlay);
-
-    const confirmButton = document.getElementById('confirmPID');
-    const pidInput = document.getElementById('pidInput');
-
-    confirmButton.addEventListener('click', () => {
-      const inputPID = pidInput.value.trim();
-      if (inputPID) {
-        urlParams.set('pid', inputPID);
-        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-        window.history.replaceState({}, '', newUrl);
-        
-        if (!window.timelineManager.study) {
-          window.timelineManager.study = {};
-        }
-        window.timelineManager.study.pid = inputPID;
-        
-        modalOverlay.remove();
-      } else {
-        pidInput.classList.add('error');
-      }
-    });
-
-    pidInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        confirmButton.click();
-      }
-    });
-
-    pidInput.addEventListener('input', () => {
-      pidInput.classList.remove('error');
-    });
+    // Update URL with the random PID
+    urlParams.set('pid', randomPid);
+    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+    
+    // Update timelineManager.study with the random PID
+    if (!window.timelineManager.study) {
+      window.timelineManager.study = {};
+    }
+    window.timelineManager.study.pid = randomPid;
+    
+    console.log('PID modal disabled - generated random PID:', randomPid);
   }
+}
+
+export function syncURLParamsToStudy() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!window.timelineManager.study) {
+        window.timelineManager.study = {};
+    }
+    
+    // Sync all URL parameters into the study object
+    for (const [key, value] of urlParams) {
+        window.timelineManager.study[key] = value;
+    }
 }
